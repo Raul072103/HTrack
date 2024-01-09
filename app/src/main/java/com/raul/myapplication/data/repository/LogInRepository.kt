@@ -1,17 +1,24 @@
 package com.raul.myapplication.data.repository
 
 import com.raul.myapplication.data.remote.model.User
+import com.raul.myapplication.data.remote.model.UserLogIn
 import com.raul.myapplication.data.remote.network.RegistrationApiService
 import retrofit2.Response
 
 interface LogInRepository {
-    suspend fun createPost(user: User) : Response<User>
+    suspend fun logIn(user: UserLogIn): User
+
+    suspend fun signUp(user: User): Unit
 }
 
 class NetworkLogInRepository(
     private val registrationApiService: RegistrationApiService
 ) : LogInRepository {
-    override suspend fun createPost(user: User): Response<User> {
-        return registrationApiService.createPost(user)
+    override suspend fun logIn(user: UserLogIn): User {
+        return registrationApiService.logIn(user)
+    }
+
+    override suspend fun signUp(user: User) {
+        registrationApiService.signUp(user)
     }
 }
