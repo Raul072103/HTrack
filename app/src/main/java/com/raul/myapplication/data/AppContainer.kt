@@ -14,10 +14,14 @@ interface AppContainer {
 }
 
 class DefaultAppContainer() : AppContainer {
-    private val baseUrl = "https://jsonplaceholder.typicode.com/"
+    private val baseUrl = "http://192.168.0.168:8080/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(
+            Json{
+                ignoreUnknownKeys = true
+            }
+            .asConverterFactory("application/json".toMediaType()))
         .baseUrl(baseUrl)
         .build()
 

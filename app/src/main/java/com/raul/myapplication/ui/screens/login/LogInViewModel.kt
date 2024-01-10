@@ -1,6 +1,5 @@
 package com.raul.myapplication.ui.screens.login
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +10,6 @@ import com.raul.myapplication.data.remote.model.UserLogIn
 import com.raul.myapplication.data.repository.LogInRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 
 sealed interface LogInUiState {
@@ -34,10 +32,13 @@ class LogInViewModel(
         viewModelScope.launch {
             logInUiState = LogInUiState.Loading
             logInUiState = try {
-                LogInUiState.Success(logInRepository.logIn(user = currentUser))
+                val response = logInRepository.logIn(user = user)
+                LogInUiState.Success(response)
             } catch (e: HttpException) {
+                e.printStackTrace()
                 LogInUiState.Error
             } catch (e: IOException) {
+                e.printStackTrace()
                 LogInUiState.Error
             }
         }
